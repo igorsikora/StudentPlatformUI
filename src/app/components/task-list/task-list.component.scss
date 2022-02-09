@@ -1,0 +1,60 @@
+.toDoList {
+  display: flex;
+  justify-content: space-evenly;
+
+
+  &__list {
+  border: solid 1px #ccc;
+  height: 90vh;
+  width: 30vw;
+  background: white;
+  //border-radius: 4px;
+  overflow-y: auto;
+  }
+  &__header {
+    height: 3vh;
+    border-bottom: solid 2px black;
+    font-size: 1.5em;
+    padding: 20px 10px;
+    text-align: center;
+  }
+  &__element {
+    min-height: 3vh;
+  padding: 20px 10px;
+  border-bottom: solid 1px #ccc;
+  color: rgba(0, 0, 0, 0.87);
+  box-sizing: border-box;
+  cursor: move;
+  //background: white;
+  font-size: 1.2em;
+
+  &--create {
+    height: 15vh;
+    text-align: center;
+    button {
+      margin-left: 20px;
+    }
+  }
+  }
+}
+
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.toDoList__list.cdk-drop-list-dragging .toDoList__element:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

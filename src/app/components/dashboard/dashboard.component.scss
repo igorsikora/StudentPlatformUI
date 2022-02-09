@@ -1,0 +1,26 @@
+.dashboard {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+  &__card {
+    width: 30vw;
+    height: 80vh;
+    mat-card-title {
+      height: 3vh;
+    }
+    mat-card-content {
+      margin-top: 24px;
+      height: calc(80vh - 24px - 3vh);
+      overflow-y: auto;
+    }
+  }
+  &__element {
+    padding: 20px 10px;
+    border-bottom: solid 1px #ccc;
+
+    &:first-child {
+      border-top: solid 1px #ccc;
+    }
+  }
+}

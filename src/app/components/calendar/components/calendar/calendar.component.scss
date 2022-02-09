@@ -1,0 +1,13 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 12px;
+
+  &__buttons {
+    display: flex;
+    button {
+      margin-right: 2px;
+    }
+  }
+}

@@ -1,0 +1,26 @@
+<mat-card class="card">
+  <form [formGroup]="userForm" (ngSubmit)="onFormSubmit()" class="card__form">
+    <mat-form-field appearance="outline">
+      <mat-label>Imie</mat-label>
+      <input matInput formControlName="firstName">
+      <mat-icon matSuffix>person</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nazwisko</mat-label>
+      <input matInput formControlName="lastName">
+      <mat-icon matSuffix>person</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email">
+      <mat-icon matSuffix>email</mat-icon>
+    </mat-form-field>
+
+
+
+    <button mat-raised-button type="submit" [disabled]="!userForm.valid">Zapisz</button>
+  </form>
+</mat-card>
+

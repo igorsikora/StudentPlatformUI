@@ -1,0 +1,11 @@
+.card {
+  width: 60vw;
+  max-height: 80vh;
+  margin: auto; //center horizontally
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+  }
+
+}

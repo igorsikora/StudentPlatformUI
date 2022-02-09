@@ -1,0 +1,46 @@
+<div class="modal">
+  <mat-dialog-content>
+    <form
+      [formGroup]="calendarEventForm"
+      (ngSubmit)="onYesClick()"
+      class="card__form"
+    >
+      <mat-form-field appearance="outline">
+        <mat-label>Tytuł</mat-label>
+        <input matInput formControlName="title" />
+        <mat-icon matSuffix>person</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Opis</mat-label>
+        <textarea
+          matInput
+          cdkAutosizeMinRows="10"
+          cdkAutosizeMaxRows="20"
+          cdkTextareaAutosize
+          formControlName="description"
+        ></textarea>
+        <mat-icon matSuffix>person</mat-icon>
+      </mat-form-field>
+
+      <p>
+        <mat-checkbox formControlName="createTask">Utwórz zadanie</mat-checkbox>
+      </p>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button
+      mat-button
+      (click)="onYesClick()"
+      [disabled]="!calendarEventForm.valid"
+    >
+      Zapisz
+    </button>
+    <button mat-button (click)="onDeleteClick()" *ngIf="!isCreate">
+      Usuń
+    </button>
+    <button mat-button (click)="onNoClick()">
+      Wyjdź
+    </button>
+  </mat-dialog-actions>
+</div>

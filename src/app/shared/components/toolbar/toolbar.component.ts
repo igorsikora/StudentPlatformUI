@@ -4,6 +4,8 @@ import {
   OnInit,
   Output
 } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -11,16 +13,17 @@ import {
   styleUrls: ['./toolbar.component.scss']
 })
 export class ToolbarComponent implements OnInit {
-
-  @Output() sidenavToggle = new EventEmitter<void>();
-
-  constructor() { }
+  isAuth!: boolean;
+  constructor(private authService: AuthService, private router:Router) { }
 
   ngOnInit() {
+    this.authService.isAuthenticated$.subscribe(value => this.isAuth = value);
   }
 
-  onToggleSidenav() {
-    this.sidenavToggle.emit();
+  logout() {
+    this.authService.signOut();
+    this.isAuth = this.authService.isAuthenticated();
+    this.router.navigateByUrl('/login');
   }
 
 }

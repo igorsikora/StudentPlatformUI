@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { StudentDto } from 'src/app/models/student.dto';
-import { StudentDtoMock } from 'src/app/models/student.dto.mock';
-import { StudentService } from 'src/app/services/student.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { UserUpdateDto } from 'src/app/models/user-update.dto';
+import { UserDto } from 'src/app/models/user.dto';
+import { AuthService } from 'src/app/services/auth.service';
+ import { EmailChangeModalComponent } from '../modals/components/email-change-modal/email-change-modal.component';
+import { PasswordChangeModalComponent } from '../modals/components/password-change-modal/password-change-modal.component';
 
 @Component({
   selector: 'app-user',
@@ -11,35 +13,72 @@ import { StudentService } from 'src/app/services/student.service';
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit {
-  constructor(private formBuilder: FormBuilder, private service: StudentService, private snackBar: MatSnackBar) { }
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private dialog: MatDialog) { }
   userForm!: FormGroup;
-  studentDto!: StudentDto;
+  userDto!: UserDto;
+  userFormLoading: boolean = true;
   ngOnInit(): void {
-    this.service.getStudent(1).subscribe((result :StudentDto) => {
-      this.studentDto = result
+    this.authService.getDetails().subscribe((result: UserDto) => {
+      this.userDto = result
       this.userForm = this.formBuilder.group({
-        firstName: [this.studentDto.firstName, Validators.required],
-        lastName: [this.studentDto.lastName, Validators.required],
-        email: [this.studentDto.email, [Validators.required, Validators.email]]
-   });
+        firstName: [this.userDto.firstName, Validators.required],
+        lastName: [this.userDto.lastName, Validators.required],
+        email: [this.userDto.email, [Validators.required, Validators.email]]
+      });
+      this.userFormLoading = false;
     });
 
 
   }
 
   onFormSubmit(): void {
-    this.studentDto = {
-      ...this.studentDto,
-      email: this.userForm.get('email')!.value,
-      firstName : this.userForm.get('firstName')!.value,
-      lastName :  this.userForm.get('lastName')!.value,
+    let userUpdateDto: UserUpdateDto = {
+      firstName: this.userForm.get('firstName')!.value,
+      lastName: this.userForm.get('lastName')!.value,
     }
-    this.service.updateStudent(this.studentDto).subscribe(
-      () => {
-        let snackBarRef = this.snackBar.open('User updated', undefined,  {
-          duration: 2000
-        });
+    this.authService.updateUser(userUpdateDto);
+  }
+
+  onChangePassword() {
+    const modalRef = this.dialog.open(PasswordChangeModalComponent, {
+      width: '50vw',
+      data: this.userDto
+    });
+    modalRef.afterClosed().subscribe((data: {
+      oldPassword: string,
+      password: string,
+      confirmPassword: string
+    }) => {
+      if (data) {
+        let userUpdateDto: UserUpdateDto = {
+          ...this.userDto,
+          currentPassword: data.oldPassword,
+          newPassword: data.password
+        }
+        console.log(userUpdateDto);
+
+        this.authService.updateUserPassword(userUpdateDto);
       }
-    );
-}
+    });
+  }
+
+  onChangeEmail() {
+    const modalRef = this.dialog.open(EmailChangeModalComponent, {
+      width: '50vw',
+      data: this.userDto
+    });
+
+    modalRef.afterClosed().subscribe((data: {
+      email: string,
+      confirmEmail: string,
+    }) => {
+      if (data) {
+        let userUpdateDto: UserUpdateDto = {
+          ...this.userDto,
+          email: data.email,
+        }
+        this.authService.updateUserEmail(userUpdateDto);
+      }
+    });
+  }
 }

@@ -1,13 +1,11 @@
-<mat-toolbar color="primary">
-  <div>
-    <button mat-icon-button (click)="onToggleSidenav()">
-      <mat-icon>menu</mat-icon>
-    </button>
-  </div>
+<mat-toolbar color="primary" *ngIf="isAuth">
     <div>
         <button mat-button routerLink="/dashboard">Panel główny</button>
-        <button mat-button routerLink="/user">Profil</button>
         <button mat-button routerLink="/taskList">Zadania</button>
         <button mat-button routerLink="/calendar">Kalendarz</button>
+    </div>
+    <div id="userAction">
+      <button mat-button routerLink="/user">Profil</button>
+      <button mat-button color="accent" (click)="logout()">Wyloguj</button>
     </div>
 </mat-toolbar>

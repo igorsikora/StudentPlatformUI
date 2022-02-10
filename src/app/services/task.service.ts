@@ -3,26 +3,25 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Status } from '../models/status.enum';
-import { StudentTaskListDto } from '../models/student-task-list.dto';
+import { TaskDto } from '../models/task.dto';
 import { NotificationService } from './notification.service';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
   private controllerUrl = 'api/Task';
-  toDoTasks: Subject<Array<StudentTaskListDto>> = new Subject();
-  inProgressTasks: Subject<Array<StudentTaskListDto>> = new Subject();
-  DoneTasks: Subject<Array<StudentTaskListDto>> = new Subject();
+  toDoTasks: Subject<Array<TaskDto>> = new Subject();
+  inProgressTasks: Subject<Array<TaskDto>> = new Subject();
+  DoneTasks: Subject<Array<TaskDto>> = new Subject();
   constructor(
     private http: HttpClient,
     private notifyService: NotificationService) { }
 
 
-  createTask(name: string, studentId: number): void {
+  createTask(name: string): void {
 
-    let taskDto: StudentTaskListDto = {
+    let taskDto: TaskDto = {
       title: name,
       statusId: Status.toDo,
-      studentId: studentId,
       id: 0
     };
     this.http.post(environment.apiUrl + this.controllerUrl, taskDto).subscribe(result => {
@@ -31,46 +30,48 @@ export class TaskService {
     },
       e => console.error(e),
       () => {
-        this.notifyService.notification$.next('task created succesfully');
+        this.notifyService.notification$.next('stworzono zadanie');
       }
     );
   }
 
   getToDoTasks(): void {
-    this.http.get<Array<StudentTaskListDto>>(environment.apiUrl + this.controllerUrl + '/tasks/0').subscribe((result: Array<StudentTaskListDto>) => {
+    this.http.get<Array<TaskDto>>(environment.apiUrl + this.controllerUrl + "/" + Status.toDo).subscribe((result: Array<TaskDto>) => {
       this.toDoTasks.next(result);
     })
   }
 
   getInprogressTasks(): void {
-    this.http.get<Array<StudentTaskListDto>>(environment.apiUrl + this.controllerUrl + '/tasks/1').subscribe((result: Array<StudentTaskListDto>) => {
+    this.http.get<Array<TaskDto>>(environment.apiUrl + this.controllerUrl + "/" + Status.inProgress).subscribe((result: Array<TaskDto>) => {
       this.inProgressTasks.next(result);
     })
   }
 
   getDoneTasks(): void {
-    this.http.get<Array<StudentTaskListDto>>(environment.apiUrl + this.controllerUrl + '/tasks/2').subscribe((result: Array<StudentTaskListDto>) => {
+    this.http.get<Array<TaskDto>>(environment.apiUrl + this.controllerUrl + "/" + Status.Done).subscribe((result: Array<TaskDto>) => {
       this.DoneTasks.next(result);
     })
   }
 
-  updateTask(dto: StudentTaskListDto, statusId: number) {
+  updateTask(dto: TaskDto, statusId: number) {
     dto.statusId = statusId;
     return this.http.put(environment.apiUrl + this.controllerUrl, dto);
   }
 
+  // ToDo czy potrzebne
   deleteTask(id: number): void {
     this.http.delete(environment.apiUrl + this.controllerUrl + "/" + id).subscribe(
       () => { },
       e => console.error(e),
-      () => this.notifyService.notification$.next('deleted task succesfully'));
+      () => this.notifyService.notification$.next('usunięto zadanie'));
   }
-  deleteTasks(dtos: Array<StudentTaskListDto>) {
+
+  deleteTasks(dtos: Array<TaskDto>) {
     this.http.request('delete', (environment.apiUrl + this.controllerUrl), { body: dtos }).subscribe(() => {
     }, e => console.log(e),
       () => {
         this.DoneTasks.next([]);
-        this.notifyService.notification$.next('cleared all done tasks');
+        this.notifyService.notification$.next('usunięto zrobione zadania');
       });
   }
 }

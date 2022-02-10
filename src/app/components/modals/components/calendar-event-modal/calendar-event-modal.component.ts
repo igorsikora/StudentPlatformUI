@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { StudentCalendarEventDto } from 'src/app/models/student-calendar-event.dto';
+import { CalendarEventDto } from 'src/app/models/calendar-event.dto';
 
 @Component({
   selector: 'app-calendar-event-modal',
@@ -12,7 +12,7 @@ export class CalendarEventModalComponent implements OnInit {
   isCreate = true;
   constructor(
     public dialogRef: MatDialogRef<CalendarEventModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: StudentCalendarEventDto,
+    @Inject(MAT_DIALOG_DATA) public data: CalendarEventDto,
     private formBuilder: FormBuilder
   ) {
 

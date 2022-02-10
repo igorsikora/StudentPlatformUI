@@ -1,14 +1,13 @@
-import { StudentCalendarEventDto } from "./student-calendar-event.dto";
+import { CalendarEventDto } from "./calendar-event.dto";
 
-export class StudentCalendarEventDtoMock {
-  static dto(): StudentCalendarEventDto[] {
+export class CalendarEventDtoMock {
+  static dto(): CalendarEventDto[] {
     return [
       {
         start: new Date(),
         startDate : '',
         endDate : '',
         id: 1,
-        studentId: 1,
         title: 'Praca inżynierska',
         description: 'praca',
         draggable: true,

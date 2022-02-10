@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { SidenavComponent } from './components/sidenav/sidenav.component';
 
 
 @NgModule({

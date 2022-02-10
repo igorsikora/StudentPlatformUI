@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-import { StudentTaskListDtoMock } from 'src/app/models/student-task-list.dto.mock';
-import { StudentTaskListDto } from 'src/app/models/student-task-list.dto';
+import {CdkDragDrop, transferArrayItem} from '@angular/cdk/drag-drop';
 import { TaskService } from 'src/app/services/task.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Status } from 'src/app/models/status.enum';
+import { TaskDto } from 'src/app/models/task.dto';
 @Component({
   selector: 'app-task-list',
   templateUrl: './task-list.component.html',
@@ -12,9 +11,9 @@ import { Status } from 'src/app/models/status.enum';
 })
 export class TaskListComponent implements OnInit {
   title: string = '';
-  todo = Array<StudentTaskListDto>();
-  inProgress = Array<StudentTaskListDto>();
-  done = Array<StudentTaskListDto>();
+  todo = Array<TaskDto>();
+  inProgress = Array<TaskDto>();
+  done = Array<TaskDto>();
   constructor(
     private taskService: TaskService,
     private snackBar: MatSnackBar) { }
@@ -27,7 +26,7 @@ export class TaskListComponent implements OnInit {
     this.taskService.inProgressTasks.subscribe(value => this.inProgress = value);
     this.taskService.DoneTasks.subscribe(value => this.done = value);
   }
-  drop(event: CdkDragDrop<StudentTaskListDto[]>, name:string) {
+  drop(event: CdkDragDrop<TaskDto[]>, name:string) {
     let statusId!: number;
     switch (name) {
       case 'toDo':
@@ -64,7 +63,7 @@ export class TaskListComponent implements OnInit {
   }
 
   createNewTask() {
-    this.taskService.createTask(this.title, 1);
+    this.taskService.createTask(this.title);
     this.title = '';
   }
 

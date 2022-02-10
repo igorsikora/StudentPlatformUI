@@ -4,4 +4,10 @@ mat-toolbar {
   top: 0; /* Sets the sticky toolbar to be on top */
   z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
   height: 64px;
+  width: 100%;
+  display: flex;
+}
+
+#userAction {
+  margin-left: auto;
 }

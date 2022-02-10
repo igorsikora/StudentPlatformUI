@@ -4,29 +4,28 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject, throwError } from 'rxjs';
 import { catchError, map, retry } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { StudentCalendarEventUpdateDto } from '../models/student-calendar-event-update.dto';
-import { StudentCalendarEventDto } from '../models/student-calendar-event.dto';
+import { CalendarEventDto } from '../models/calendar-event.dto';
 import { NotificationService } from './notification.service';
 
 @Injectable({providedIn: 'root'})
 export class CalendarEventsService {
   private controllerUrl = 'api/CalendarEvents';
 
-  public calendarEventsDto : Subject<Array<StudentCalendarEventDto>> = new Subject();
+  public calendarEventsDto : Subject<Array<CalendarEventDto>> = new Subject();
 
   constructor(
     private http: HttpClient,
     private notifyService: NotificationService) {
   }
-  getWeeklyCalendarEvents(studentId: number, dates: Array<Date>) {
+  getWeeklyCalendarEvents(dates: Array<Date>) {
       let httpParams: HttpParams = new HttpParams();
       dates.forEach(date => {
         httpParams = httpParams.append('day', formatDate(date, 'dd-MMM-yyyy', 'en-US'));
       })
 
-      this.http.get<Array<StudentCalendarEventDto>>(environment.apiUrl + this.controllerUrl + '/weeklyEvents/' + studentId, {params: httpParams})
+      this.http.get<Array<CalendarEventDto>>(environment.apiUrl + this.controllerUrl + '/WeeklyEvents', {params: httpParams})
     .pipe(
-       map((response: Array<StudentCalendarEventDto>) => {
+       map((response: Array<CalendarEventDto>) => {
           // dateTime returned as string
           // before returing we need to make it DateTime type again
           // also setting some calendarEvents properties
@@ -50,13 +49,13 @@ export class CalendarEventsService {
     ).subscribe(events =>
       this.calendarEventsDto.next(events));
     }
-  getMonthlyCalendarEvents(studentId: number, date: Date) {
+  getMonthlyCalendarEvents(date: Date) {
     let httpParams: HttpParams = new HttpParams();
     httpParams = httpParams.append('date', formatDate(date, 'dd-MMM-yyyy', 'en-US'));
 
-    this.http.get<Array<StudentCalendarEventDto>>(environment.apiUrl + this.controllerUrl + '/monthlyEvents/' + studentId, {params: httpParams})
+    this.http.get<Array<CalendarEventDto>>(environment.apiUrl + this.controllerUrl + '/MonthlyEvents', {params: httpParams})
   .pipe(
-     map((response: Array<StudentCalendarEventDto>) => {
+     map((response: Array<CalendarEventDto>) => {
         // dateTime returned as string
         // before returing we need to make it DateTime type again
         // also setting some calendarEvents properties
@@ -81,24 +80,24 @@ export class CalendarEventsService {
     this.calendarEventsDto.next(events));
   }
 
-  updateCalendarEvent(dto: StudentCalendarEventDto): void {
+  updateCalendarEvent(dto: CalendarEventDto): void {
     this.http.put(environment.apiUrl + this.controllerUrl, dto).subscribe(
       () => {},
       e => console.error(e),
       () => {
-        this.notifyService.notification$.next('event updated');
+        this.notifyService.notification$.next('zmieniono zdarzenie');
       }
 
     );
   }
 
-  createCalendarEvent(dto: StudentCalendarEventDto): void {
+  createCalendarEvent(dto: CalendarEventDto): void {
     this.http.post(environment.apiUrl + this.controllerUrl, dto).subscribe(result => {
       dto.id = Number(result);
     },
     e => console.error(e),
     () => {
-      this.notifyService.notification$.next('event created');
+      this.notifyService.notification$.next('utworzono zdarzenie');
     }
 );
   }

@@ -1,26 +1,34 @@
 <mat-card class="card">
-  <form [formGroup]="userForm" (ngSubmit)="onFormSubmit()" class="card__form">
+  <mat-card-content>
+  <form
+    [formGroup]="userForm"
+    (ngSubmit)="onFormSubmit()"
+    class="card__form"
+    *ngIf="!userFormLoading"
+  >
     <mat-form-field appearance="outline">
       <mat-label>Imie</mat-label>
-      <input matInput formControlName="firstName">
+      <input matInput formControlName="firstName" />
       <mat-icon matSuffix>person</mat-icon>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Nazwisko</mat-label>
-      <input matInput formControlName="lastName">
+      <input matInput formControlName="lastName" />
       <mat-icon matSuffix>person</mat-icon>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Email</mat-label>
-      <input matInput formControlName="email">
-      <mat-icon matSuffix>email</mat-icon>
-    </mat-form-field>
-
-
-
-    <button mat-raised-button type="submit" [disabled]="!userForm.valid">Zapisz</button>
   </form>
-</mat-card>
+  </mat-card-content>
+  <mat-card-actions>
+    <div class="card__actions">
+      <button mat-stroked-button (click)="onChangeEmail()">Zmień email</button>
+      <button mat-stroked-button (click)="onChangePassword()">Zmień hasło</button>
+    </div>
+    <button mat-raised-button type="submit" [disabled]="!userForm.valid">
+      Zapisz
+    </button>
 
+  </mat-card-actions>
+
+</mat-card>

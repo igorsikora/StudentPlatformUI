@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { StudentCalendarEventDto } from 'src/app/models/student-calendar-event.dto';
-import { StudentTaskListDto } from 'src/app/models/student-task-list.dto';
+import { CalendarEventDto } from 'src/app/models/calendar-event.dto';
+import { TaskDto } from 'src/app/models/task.dto';
 import { CalendarEventsService } from 'src/app/services/calendarEvents.service';
 import { TaskService } from 'src/app/services/task.service';
 
@@ -10,16 +10,16 @@ import { TaskService } from 'src/app/services/task.service';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  toDoTasks!: Array<StudentTaskListDto>
-  inProgressTasks!: Array<StudentTaskListDto>
-  calendarEvents!: Array<StudentCalendarEventDto>
+  toDoTasks!: Array<TaskDto>
+  inProgressTasks!: Array<TaskDto>
+  calendarEvents!: Array<CalendarEventDto>
   constructor(
     private calendarService: CalendarEventsService,
     private taskService: TaskService
   ) { }
 
   ngOnInit(): void {
-    this.calendarService.getWeeklyCalendarEvents(1, [new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())]);
+    this.calendarService.getWeeklyCalendarEvents([new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())]);
     this.taskService.getToDoTasks();
     this.taskService.getInprogressTasks();
     this.taskService.toDoTasks.subscribe(tasks => this.toDoTasks = tasks);

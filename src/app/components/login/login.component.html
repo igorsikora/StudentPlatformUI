@@ -1,0 +1,20 @@
+<mat-card class="card">
+  <form [formGroup]="loginForm" (ngSubmit)="onFormSubmit()" class="card__form">
+    <mat-form-field appearance="outline">
+      <mat-label>email</mat-label>
+      <input matInput formControlName="email">
+      <mat-icon matSuffix>person</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>hasło</mat-label>
+      <input matInput type="password" formControlName="password">
+      <mat-icon matSuffix>person</mat-icon>
+    </mat-form-field>
+
+
+    <button mat-raised-button type="submit" [disabled]="!loginForm.valid">Zaloguj</button>
+    <button mat-raised-button color="accent" (click)="goToRegister()">Zarejestruj</button>
+  </form>
+</mat-card>
+

@@ -2,15 +2,14 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
 import { fromEvent } from 'rxjs';
 import { finalize, take, takeUntil } from 'rxjs/operators';
-import { StudentCalendarEventDtoMock } from 'src/app/models/student-calendar-event.dto.mock';
 import { WeekViewHourSegment } from 'calendar-utils';
-import { StudentCalendarEventDto } from 'src/app/models/student-calendar-event.dto';
 import { addDays, addMinutes, endOfWeek } from 'date-fns';
 import { MatDialog } from '@angular/material/dialog';
 import { CalendarEventModalComponent } from 'src/app/components/modals/components/calendar-event-modal/calendar-event-modal.component';
 import { CalendarEventsService } from 'src/app/services/calendarEvents.service';
 import { formatDate } from '@angular/common';
 import { TaskService } from 'src/app/services/task.service';
+import { CalendarEventDto } from 'src/app/models/calendar-event.dto';
 
 
 function floorToNearest(amount: number, precision: number) {
@@ -28,8 +27,8 @@ function ceilToNearest(amount: number, precision: number) {
 })
 export class CalendarComponent implements OnInit {
   //Mock data
-  //events = StudentCalendarEventDtoMock.dto();
-  events!: Array<StudentCalendarEventDto>;
+  //events = CalendarEventDtoMock.dto();
+  events!: Array<CalendarEventDto>;
 
   //DragToCreate
   dragToCreateActive = false;
@@ -47,7 +46,7 @@ export class CalendarComponent implements OnInit {
     private taskService: TaskService) { }
 
   ngOnInit(): void {
-    this.calendarService.getMonthlyCalendarEvents(1, this.viewDate);
+    this.calendarService.getMonthlyCalendarEvents(this.viewDate);
     this.calendarService.calendarEventsDto.subscribe(result => this.events = result);
   }
 
@@ -56,7 +55,7 @@ export class CalendarComponent implements OnInit {
   }
   viewDateChange() {
     if (this.view == CalendarView.Month) {
-      this.calendarService.getMonthlyCalendarEvents(1, this.viewDate);
+      this.calendarService.getMonthlyCalendarEvents(this.viewDate);
     } else {
       let dates: Array<Date> = [];
       for (let i = 0; i < this.daysInWeek; i++) {
@@ -64,7 +63,7 @@ export class CalendarComponent implements OnInit {
         newDate.setDate(this.viewDate.getDate() + i);
         dates.push(newDate);
       }
-      this.calendarService.getWeeklyCalendarEvents(1, dates);
+      this.calendarService.getWeeklyCalendarEvents(dates);
     }
   }
   eventTimesChanged({
@@ -72,7 +71,7 @@ export class CalendarComponent implements OnInit {
     newStart,
     newEnd,
   }: CalendarEventTimesChangedEvent): void {
-    let newEvent!: StudentCalendarEventDto;
+    let newEvent!: CalendarEventDto;
     this.events = this.events.map((iEvent) => {
       if (iEvent === event) {
         newEvent = {
@@ -98,7 +97,7 @@ export class CalendarComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe((data: {
         action: string,
-        newEvent: StudentCalendarEventDto,
+        newEvent: CalendarEventDto,
         createTask: boolean
       }) => {
         switch (data.action) {
@@ -110,7 +109,7 @@ export class CalendarComponent implements OnInit {
           case 'create or update':
             this.calendarService.updateCalendarEvent(data.newEvent);
             if (data.createTask) {
-              this.taskService.createTask(data.newEvent.title, 1);
+              this.taskService.createTask(data.newEvent.title);
             }
             break;
         }
@@ -128,7 +127,7 @@ export class CalendarComponent implements OnInit {
     mouseDownEvent: MouseEvent,
     segmentElement: HTMLElement
   ) {
-    const dragToSelectEvent: StudentCalendarEventDto = {
+    const dragToSelectEvent: CalendarEventDto = {
       id: 0,
       title: 'New event',
       description: '',
@@ -139,8 +138,6 @@ export class CalendarComponent implements OnInit {
       meta: {
         tmpEvent: true,
       },
-
-      studentId: 1 //toDo get real student id
     };
     this.events = [...this.events, dragToSelectEvent];
     const segmentPosition = segmentElement.getBoundingClientRect();
@@ -161,7 +158,7 @@ export class CalendarComponent implements OnInit {
 
           dialogRef.afterClosed().pipe(take(1)).subscribe((data: {
             action: string,
-            newEvent: StudentCalendarEventDto,
+            newEvent: CalendarEventDto,
             createTask: boolean
           }) => {
             switch (data.action) {
@@ -175,7 +172,7 @@ export class CalendarComponent implements OnInit {
                 this.calendarService.createCalendarEvent(dragToSelectEvent);
 
                 if (data.createTask) {
-                  this.taskService.createTask(data.newEvent.title, 1);
+                  this.taskService.createTask(data.newEvent.title);
                 }
                 break;
             }

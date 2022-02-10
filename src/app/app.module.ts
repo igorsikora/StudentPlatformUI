@@ -9,18 +9,22 @@ import { UserComponent } from './components/user/user.component';
 import { TaskListComponent } from './components/task-list/task-list.component';
 import { MaterialModule } from './shared/material.module';
 import { SharedModule } from './shared/shared.module';
-import { SidenavModule } from './shared/components/sidenav/sidenav.module';
 import { ToolbarModule } from './shared/components/toolbar/toolbar.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CalendarEventsService } from './services/calendarEvents.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import localePl from '@angular/common/locales/pl';
 import { CalendarEventModalComponent } from './components/modals/components/calendar-event-modal/calendar-event-modal.component';
-import { StudentService } from './services/student.service';
 import { TaskService } from './services/task.service';
 import { NotificationService } from './services/notification.service';
 import { registerLocaleData } from '@angular/common';
+import { OAuthModule } from 'angular-oauth2-oidc';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { ModalsModule } from './components/modals/modals.module';
+
 
 registerLocaleData(localePl);
 
@@ -30,7 +34,9 @@ registerLocaleData(localePl);
     DashboardComponent,
     UserComponent,
     TaskListComponent,
-    CalendarEventModalComponent
+    CalendarEventModalComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +44,6 @@ registerLocaleData(localePl);
     BrowserAnimationsModule,
     MaterialModule,
     SharedModule,
-    SidenavModule,
     ToolbarModule,
     HttpClientModule,
     //TaskList
@@ -46,13 +51,25 @@ registerLocaleData(localePl);
     FormsModule,
 
     //User
-    ReactiveFormsModule
+    ReactiveFormsModule,
+
+    //Oauth
+    OAuthModule.forRoot(),
+
+    //test
+    ModalsModule
   ],
   providers: [
     CalendarEventsService,
-    StudentService,
     TaskService,
     NotificationService,
+
+    //auth
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
   ],
   bootstrap: [AppComponent]
 })

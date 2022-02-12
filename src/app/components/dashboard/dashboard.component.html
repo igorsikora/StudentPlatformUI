@@ -1,5 +1,5 @@
 <div class="dashboard">
-  <mat-card class="dashboard__card">
+  <mat-card class="dashboard__card" data-qa="calendarEvents">
     <mat-card-title>Dzisiejsze zdarzenia w kalendarzu</mat-card-title>
     <mat-card-content>
       <div class="dashboard__element" *ngFor="let event of calendarEvents">
@@ -9,14 +9,14 @@
        </div>
     </mat-card-content>
   </mat-card>
-  <mat-card class="dashboard__card">
+  <mat-card class="dashboard__card" data-qa="tasksToDo">
     <mat-card-title>Zadania do zrobienia</mat-card-title>
     <mat-card-content>
     <div class="dashboard__element" *ngFor="let task of toDoTasks">{{task.title}}</div>
     </mat-card-content>
   </mat-card>
 
-  <mat-card class="dashboard__card">
+  <mat-card class="dashboard__card" data-qa="tasksInProgress">
     <mat-card-title>Zadania w trakcie</mat-card-title>
     <mat-card-content>
     <div class="dashboard__element" *ngFor="let task of inProgressTasks">{{task.title}}</div>

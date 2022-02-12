@@ -39,13 +39,7 @@ export class AuthService {
 
 
   signUp(dto: UserSignUpDto) {
-    this.http.post<string>(environment.apiUrl + this.apiControllerName + '/SignUp', dto).subscribe(
-      () => {},
-      error => console.error(error),
-      () => {
-        this.notifyService.notification$.next('Rejestracja przebiegła pomyślnie');
-      }
-      );
+    return this.http.post<string>(environment.apiUrl + this.apiControllerName + '/SignUp', dto);
   }
 
   signIn(dto: UserSignInDto) {

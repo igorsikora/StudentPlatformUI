@@ -2,18 +2,18 @@
   <form [formGroup]="emailForm" class="card__form">
     <mat-form-field appearance="outline">
       <mat-label>Email</mat-label>
-      <input matInput formControlName="email" />
+      <input matInput formControlName="email" data-qa="modalEmail"/>
       <mat-icon matSuffix>email</mat-icon>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Potwierdź email</mat-label>
-      <input matInput formControlName="confirmEmail" />
+      <input matInput formControlName="confirmEmail" data-qa="modalConfirmEmail"/>
       <mat-icon matSuffix>email</mat-icon>
     </mat-form-field>
   </form>
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button mat-button color="primary" (click)="onYesClick()" [disabled]="!emailForm.valid">Zapisz</button>
-  <button mat-stroked-button (click)="onNoClick()">Anuluj</button>
+  <button mat-button color="primary" (click)="onYesClick()" [disabled]="!emailForm.valid" data-qa="modalSubmit">Zapisz</button>
+  <button mat-stroked-button (click)="onNoClick()" data-qa="modalCancel">Anuluj</button>
 </mat-dialog-actions>

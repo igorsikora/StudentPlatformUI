@@ -5,7 +5,8 @@ export class UserDtoMock {
     return {
       firstName: 'Jan',
       lastName: 'Kowalski',
-      email: 'demoUser@polsl.pl'
+      email: 'demoUser@polsl.pl',
+      userName: 'demoUser'
     }
   }
 }

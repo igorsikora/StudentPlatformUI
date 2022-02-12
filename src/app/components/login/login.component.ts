@@ -11,8 +11,8 @@ import { AuthService } from 'src/app/services/auth.service';
 export class LoginComponent implements OnInit {
 
   loginForm = this.formBuilder.group({
-    email: ['demo@demo.pl', [Validators.required, Validators.email]],
-    password: ['zaq1@WSX', Validators.required]
+    userName: ['',Validators.required],
+    password: ['', Validators.required]
 });
 
   constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) { }

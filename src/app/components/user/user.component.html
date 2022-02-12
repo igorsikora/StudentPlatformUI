@@ -6,15 +6,21 @@
     class="card__form"
     *ngIf="!userFormLoading"
   >
+  <mat-form-field appearance="outline">
+    <mat-label>Login</mat-label>
+    <input matInput formControlName="userName" data-qa="userName"/>
+    <mat-icon matSuffix>person</mat-icon>
+  </mat-form-field>
+
     <mat-form-field appearance="outline">
       <mat-label>Imie</mat-label>
-      <input matInput formControlName="firstName" />
+      <input matInput formControlName="firstName" data-qa="firstName"/>
       <mat-icon matSuffix>person</mat-icon>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Nazwisko</mat-label>
-      <input matInput formControlName="lastName" />
+      <input matInput formControlName="lastName" data-qa="lastName"/>
       <mat-icon matSuffix>person</mat-icon>
     </mat-form-field>
 
@@ -22,10 +28,10 @@
   </mat-card-content>
   <mat-card-actions>
     <div class="card__actions">
-      <button mat-stroked-button (click)="onChangeEmail()">Zmień email</button>
-      <button mat-stroked-button (click)="onChangePassword()">Zmień hasło</button>
+      <button mat-stroked-button (click)="onChangeEmail()" data-qa="changeEmail">Zmień email</button>
+      <button mat-stroked-button (click)="onChangePassword()" data-qa="changePassword">Zmień hasło</button>
     </div>
-    <button mat-raised-button type="submit" [disabled]="!userForm.valid">
+    <button mat-raised-button type="submit" [disabled]="!userForm.valid" data-qa="submit">
       Zapisz
     </button>
 

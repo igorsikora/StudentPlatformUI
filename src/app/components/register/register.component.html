@@ -1,38 +1,44 @@
 <mat-card class="card">
   <form [formGroup]="registerForm" (ngSubmit)="onFormSubmit()" class="card__form">
     <mat-form-field appearance="outline">
-      <mat-label>email</mat-label>
-      <input matInput formControlName="email">
+      <mat-label>login</mat-label>
+      <input matInput formControlName="userName" data-qa="login">
       <mat-icon matSuffix>person</mat-icon>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
+      <mat-label>email</mat-label>
+      <input matInput formControlName="email" data-qa="email">
+      <mat-icon matSuffix>email</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
       <mat-label>Imie</mat-label>
-      <input matInput formControlName="firstName">
+      <input matInput formControlName="firstName" data-qa="firstName">
       <mat-icon matSuffix>person</mat-icon>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Nazwisko</mat-label>
-      <input matInput formControlName="lastName">
+      <input matInput formControlName="lastName" data-qa="lastName">
       <mat-icon matSuffix>person</mat-icon>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Hasło</mat-label>
-      <input matInput type="password" formControlName="password">
+      <input matInput type="password" formControlName="password" data-qa="password">
       <mat-icon matSuffix>person</mat-icon>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Potwierdź hasło</mat-label>
-      <input matInput type="password" formControlName="confirmPassword">
+      <input matInput type="password" formControlName="confirmPassword" data-qa="confirmPassword">
       <mat-icon matSuffix>person</mat-icon>
     </mat-form-field>
 
 
-    <button mat-raised-button type="submit" [disabled]="!registerForm.valid">Zarejestruj</button>
-    <button mat-raised-button type="submit" color="accent" (click)="goToLogin()">Zaloguj</button>
+    <button mat-raised-button type="submit" [disabled]="!registerForm.valid" data-qa="submit">Zarejestruj</button>
+    <button mat-raised-button type="submit" color="accent" (click)="goToLogin()" data-qa="goToLogin">Przejdź do logowania</button>
   </form>
 </mat-card>
 

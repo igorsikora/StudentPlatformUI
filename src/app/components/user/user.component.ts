@@ -21,6 +21,7 @@ export class UserComponent implements OnInit {
     this.authService.getDetails().subscribe((result: UserDto) => {
       this.userDto = result
       this.userForm = this.formBuilder.group({
+        userName: [this.userDto.userName, Validators.required],
         firstName: [this.userDto.firstName, Validators.required],
         lastName: [this.userDto.lastName, Validators.required],
         email: [this.userDto.email, [Validators.required, Validators.email]]
@@ -33,6 +34,7 @@ export class UserComponent implements OnInit {
 
   onFormSubmit(): void {
     let userUpdateDto: UserUpdateDto = {
+      userName: this.userForm.get('userName')!.value,
       firstName: this.userForm.get('firstName')!.value,
       lastName: this.userForm.get('lastName')!.value,
     }

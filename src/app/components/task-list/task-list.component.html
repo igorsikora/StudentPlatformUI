@@ -45,7 +45,7 @@
   data-qa="donePanel"
 
   >
-  <div class="toDoList__header">GOTOWE<button mat-button (click)="deleteDoneTasks()">Wyczyść</button></div>
-  <div class="toDoList__element" *ngFor="let item of done" cdkDrag>{{item.title}}</div>
+  <div class="toDoList__header">GOTOWE<button mat-button (click)="deleteDoneTasks()" data-qa="clearAllDoneTasks">Wyczyść</button></div>
+  <div class="toDoList__element" *ngFor="let item of done" cdkDrag data-qa="doneTask">{{item.title}}</div>
 </div>
 </div>

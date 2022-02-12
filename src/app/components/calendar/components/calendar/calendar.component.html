@@ -8,6 +8,7 @@
         [(viewDate)]="viewDate"
         [daysInWeek]="1"
         (viewDateChange)="viewDateChange()"
+        data-qa="prevView"
       >
         <
       </button>
@@ -17,7 +18,7 @@
        mwlCalendarToday
         [(viewDate)]="viewDate"
         (viewDateChange)="viewDateChange()"
-
+      data-qa="todayView"
       >
         Dziś
       </button>
@@ -29,13 +30,13 @@
         [(viewDate)]="viewDate"
         [daysInWeek]="1"
         (viewDateChange)="viewDateChange()"
-
+      data-qa="nextView"
       >
         >
       </button>
   </div>
   <div class="header__date">
-    <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):locale }}</h3>
+    <h3 data-qa="date">{{ viewDate | calendarDate:(view + 'ViewTitle'):locale:weekStartsOn:[]:daysInWeek }}</h3>
   </div>
   <div class="header__buttons">
       <button
@@ -43,6 +44,7 @@
       color="primary"
       (click)="setView(CalendarView.Month)"
         [class.active]="view === CalendarView.Month"
+        data-qa="showMonthView"
       >
         Miesiąc
       </button>
@@ -51,6 +53,7 @@
       color="primary"
       (click)="setView(CalendarView.Week)"
         [class.active]="view === CalendarView.Week"
+        data-qa="showWeekView"
       >
         Tydzień
       </button>
@@ -59,6 +62,7 @@
       color="primary"
       (click)="setView(CalendarView.Day)"
         [class.active]="view === CalendarView.Day"
+        data-qa="showDayView"
       >
         Dzień
       </button>
@@ -74,6 +78,7 @@
     [events]="events"
     [locale]="locale"
     (eventTimesChanged)="eventTimesChanged($event)"
+    data-qa="monthView"
   >
   </mwl-calendar-month-view>
   <mwl-calendar-week-view
@@ -87,7 +92,8 @@
     [eventTitleTemplate]="eventTitleTemplate"
     [tooltipTemplate]="tooltipTemplate"
     [locale]="locale"
-    [hourSegmentTemplate]="weekViewHourSegmentTemplate"  >
+    [hourSegmentTemplate]="weekViewHourSegmentTemplate"
+    data-qa="weekView">
   </mwl-calendar-week-view>
   <mwl-calendar-day-view
     *ngSwitchCase="CalendarView.Day"
@@ -99,6 +105,7 @@
     [locale]="locale"
     (eventClicked)="handleEvent('Clicked', $event.event)"
     (eventTimesChanged)="eventTimesChanged($event)"
+    data-qa="dayView"
   >
   </mwl-calendar-day-view>
 </div>

@@ -4,8 +4,8 @@ describe('Register testing', () => {
   })
 
   it('Login user', () => {
-    cy.get('[data-qa="login"]').type('test')
-    cy.get('[data-qa="password"]').type('zaq1@WSX')
+    cy.get('[data-qa="login"]').clear().type('test')
+    cy.get('[data-qa="password"]').clear().type('zaq1@WSX')
     cy.get('[data-qa="submit"]').click()
 
     cy.url().should('include', '/dashboard')

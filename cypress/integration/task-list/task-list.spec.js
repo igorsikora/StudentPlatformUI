@@ -17,13 +17,28 @@ describe('Task list testing', () => {
   })
 
   it('Add new task', () => {
+    cy.intercept('https://localhost:44303/api/Task/0').as('getToDoTasks')
     const randomNumber = (Math.floor(Math.random() * (999 - 1 + 1)) + 1).toString();
     const cypressTitle = "cypress" + randomNumber;
-    cy.get('[data-qa="taskTitle"]').type(cypressTitle.toString())
+    cy.get('[data-qa="taskTitle"]').clear().type(cypressTitle.toString())
     cy.get('[data-qa="addTask"]').click()
 
-    cy.intercept('https://localhost:44303/api/Task/*').as('getToDoTasks')
     cy.wait(['@getToDoTasks'])
-    cy.get('[data-qa="toDoTask"]').last().should('have.text', cypressTitle)
-  });
+    cy.get('[data-qa="toDoTask"]').last().should('have.text', cypressTitle, {force: true})
+  })
+
+   it('Move task to Done', () => {
+      cy.drag('[data-qa="toDoTask"]:last-child', '#cdk-drop-list-2', {timeout: 3000})
+      .should("have.length", '1')
+   })
+
+  it('Clear all done tasks', () => {
+    cy.intercept('https://localhost:44303/api/Task').as('clearAllDoneTasksReq')
+
+    cy.get('[data-qa="clearAllDoneTasks"]').click()
+
+    cy.wait(['@clearAllDoneTasksReq'])
+    cy.get('[data-qa="doneTask"]').should("have.length", 0)
+
+  })
 })

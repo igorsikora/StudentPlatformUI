@@ -1,11 +1,11 @@
 <mat-toolbar color="primary" *ngIf="isAuth">
     <div>
-        <button mat-button routerLink="/dashboard">Panel główny</button>
-        <button mat-button routerLink="/taskList">Zadania</button>
-        <button mat-button routerLink="/calendar">Kalendarz</button>
+        <button mat-button routerLink="/dashboard" data-qa="dashboard">Panel główny</button>
+        <button mat-button routerLink="/taskList" data-qa="taskList">Zadania</button>
+        <button mat-button routerLink="/calendar" data-qa="calendar">Kalendarz</button>
     </div>
     <div id="userAction">
-      <button mat-button routerLink="/user">Profil</button>
-      <button mat-button color="accent" (click)="logout()">Wyloguj</button>
+      <button mat-button routerLink="/user" data-qa="user">Profil</button>
+      <button mat-button color="accent" (click)="logout()" data-qa="logout">Wyloguj</button>
     </div>
 </mat-toolbar>

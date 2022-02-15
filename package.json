@@ -8,6 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "cypress:open": "cypress open",
+    "cypress:open-firefox": "cypress open --browser firefox",
     "e2e": "cypress run"
   },
   "private": true,

@@ -4,15 +4,12 @@ import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UserSignInDto } from '../models/user-sign-in.dto';
 import { UserSignUpDto } from '../models/user-sign-up.dto';
-import { UserUpdateDto } from '../models/user-update.dto';
-import { UserDto } from '../models/user.dto';
-import { NotificationService } from './notification.service';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
   apiControllerName : string = 'api/Auth';
   isAuthenticated$ : Subject<boolean> = new Subject();
-  constructor(private http: HttpClient, private notifyService: NotificationService) {
+  constructor(private http: HttpClient) {
   }
 
   saveToken(token: string) {
@@ -50,39 +47,7 @@ export class AuthService {
     localStorage.removeItem('token');
   }
 
-  getDetails() {
-    return this.http.get<UserDto>(environment.apiUrl + this.apiControllerName + '/Detail');
-  }
 
-  updateUser(dto: UserUpdateDto) {
-    return this.http.put(environment.apiUrl + this.apiControllerName + '/UpdateUserDetails', dto).subscribe(
-      () => {},
-      error => console.error(error),
-      () => {
-        this.notifyService.notification$.next('Zmiana przebiegła pomyślnie');
-      }
-      );
-  }
-
-  updateUserEmail(dto: UserUpdateDto) {
-    return this.http.put(environment.apiUrl + this.apiControllerName + '/UpdateUserEmail', dto).subscribe(
-      () => {},
-      error => console.error(error),
-      () => {
-        this.notifyService.notification$.next('Zmiana email przebiegła pomyślnie');
-      }
-      );
-  }
-
-  updateUserPassword(dto: UserUpdateDto) {
-    return this.http.put(environment.apiUrl + this.apiControllerName + '/UpdateUserPassword', dto).subscribe(
-      () => {},
-      error => console.error(error),
-      () => {
-        this.notifyService.notification$.next('Zmiana hasła przebiegła pomyślnie');
-      }
-      );
-  }
 
 
 }

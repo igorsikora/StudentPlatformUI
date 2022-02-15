@@ -51,15 +51,15 @@ export class RegisterComponent implements OnInit {
     () => {},
     error => console.error(error),
     () => {
-      this.router.navigateByUrl('/login');
-      this.notifyService.notification$.next('Rejestracja przebiegła pomyślnie');
+      this.router.navigateByUrl('/auth/login');
+      this.notifyService.notification$.next({message:'Rejestracja przebiegła pomyślnie', isError: false});
     }
     );
 
   }
 
   goToLogin() {
-    this.router.navigateByUrl('/login');
+    this.router.navigateByUrl('/auth/login');
   }
 
 }

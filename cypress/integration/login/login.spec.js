@@ -1,6 +1,6 @@
 describe('Register testing', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:4200/login')
+    cy.visit('http://localhost:4200/auth/login')
   })
 
   it('Login user', () => {
@@ -14,6 +14,6 @@ describe('Register testing', () => {
   it('Go to registration page', () => {
     cy.get('[data-qa="goToRegister"]').click()
 
-    cy.url().should('include', '/register')
+    cy.url().should('include', '/auth/register')
   })
 })

@@ -1,9 +1,15 @@
 import { NgModule } from '@angular/core';
+import { ToolbarModule } from './components/toolbar/toolbar.module';
 
 
 @NgModule({
-  imports: [],
-  exports: [],
+  imports: [
+    ToolbarModule,
+
+  ],
+  exports: [
+    ToolbarModule,
+  ],
   declarations: [],
   providers: [],
 })

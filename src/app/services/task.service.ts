@@ -28,9 +28,13 @@ export class TaskService {
       taskDto.id = Number(result);
       this.getToDoTasks();
     },
-      e => console.error(e),
+    e =>
+    {
+      this.notifyService.notification$.next({message:'Błąd tworzenia zadania', isError: true});
+       console.error(e)
+    },
       () => {
-        this.notifyService.notification$.next('stworzono zadanie');
+        this.notifyService.notification$.next({message:'stworzono zadanie', isError: false});
       }
     );
   }
@@ -62,16 +66,24 @@ export class TaskService {
   deleteTask(id: number): void {
     this.http.delete(environment.apiUrl + this.controllerUrl + "/" + id).subscribe(
       () => { },
-      e => console.error(e),
-      () => this.notifyService.notification$.next('usunięto zadanie'));
+      e =>
+      {
+        this.notifyService.notification$.next({message:'Błąd usuwania zadania', isError: true});
+         console.error(e)
+      },
+      () => this.notifyService.notification$.next({message:'usunięto zadanie', isError: false}));
   }
 
   deleteTasks(dtos: Array<TaskDto>) {
     this.http.request('delete', (environment.apiUrl + this.controllerUrl), { body: dtos }).subscribe(() => {
-    }, e => console.log(e),
-      () => {
+    },
+    e => {
+      this.notifyService.notification$.next({message:'Błąd usuwania zadań', isError: true});
+       console.error(e)
+    },
+    () => {
         this.DoneTasks.next([]);
-        this.notifyService.notification$.next('usunięto zrobione zadania');
+        this.notifyService.notification$.next({message:'usunięto zrobione zadania', isError: false});
       });
   }
 }

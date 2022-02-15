@@ -20,7 +20,6 @@ describe('Calendar testing', () => {
     cy.wait(['@getCalendarEvents'])
     date.setMonth((date.getMonth() - 1))
     longMonth = date.toLocaleString('pl-PL', { month: 'long' });
-    console.log(date);
     cy.get('[data-qa="date"]').contains(longMonth).should('exist')
 
   })

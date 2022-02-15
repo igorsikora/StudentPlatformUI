@@ -1,6 +1,6 @@
 describe('Register testing', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:4200/register')
+    cy.visit('http://localhost:4200/auth/register')
   })
 
   it('Register new user', () => {
@@ -15,12 +15,12 @@ describe('Register testing', () => {
     cy.get('[data-qa="confirmPassword"]').clear().type('zaq1@WSX')
     cy.get('[data-qa="submit"]').click()
 
-    cy.url().should('include', '/login')
+    cy.url().should('include', '/auth/login')
   })
 
   it('Go to login page', () => {
     cy.get('[data-qa="goToLogin"]').click()
 
-    cy.url().should('include', '/login')
+    cy.url().should('include', '/auth/login')
   })
 })

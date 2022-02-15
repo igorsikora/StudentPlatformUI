@@ -49,7 +49,7 @@ export class TaskListComponent implements OnInit {
         );
       },
       e => {
-        console.log(e);
+        console.error(e);
         this.snackBar.open("update went wrong!", undefined, {
           duration: 2000
         })

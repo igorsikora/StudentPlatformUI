@@ -10,6 +10,7 @@ import { CalendarEventsService } from 'src/app/services/calendarEvents.service';
 import { formatDate } from '@angular/common';
 import { TaskService } from 'src/app/services/task.service';
 import { CalendarEventDto } from 'src/app/models/calendar-event.dto';
+import { NotificationService } from 'src/app/services/notification.service';
 
 
 function floorToNearest(amount: number, precision: number) {
@@ -42,6 +43,7 @@ export class CalendarComponent implements OnInit {
   constructor(
     private cdr: ChangeDetectorRef,
     private dialog: MatDialog,
+    private notifyService: NotificationService,
     private calendarService: CalendarEventsService,
     private taskService: TaskService) { }
 
@@ -67,6 +69,7 @@ export class CalendarComponent implements OnInit {
     }
   }
   eventTimesChanged({
+
     event,
     newStart,
     newEnd,
@@ -90,7 +93,7 @@ export class CalendarComponent implements OnInit {
   handleEvent(action: string, event: any): void {
     if (action === 'Clicked') {
       const dialogRef = this.dialog.open(CalendarEventModalComponent, {
-        width: '25vw',
+        width: '50vw',
         height: '50vh',
         data: event,
       });
@@ -107,7 +110,7 @@ export class CalendarComponent implements OnInit {
             });
             break;
           case 'create or update':
-            this.calendarService.updateCalendarEvent(data.newEvent);
+            this.calendarService.updateCalendarEvent(data.newEvent)
             if (data.createTask) {
               this.taskService.createTask(data.newEvent.title);
             }
@@ -167,9 +170,32 @@ export class CalendarComponent implements OnInit {
                 break;
 
               case 'create or update':
+                // if just clicked then set endDate to be end of segment
+                if(!dragToSelectEvent.end) {
+                  let end = new Date(dragToSelectEvent.start);
+                  if(dragToSelectEvent.start.getMinutes() == 30) {
+                    end.setMinutes(0);
+                    end.setHours(dragToSelectEvent.start.getHours() +1)
+                  } else {
+                    end.setMinutes(30);
+                  }
+                  dragToSelectEvent.end = end;
+                  dragToSelectEvent.endDate = formatDate(end, 'yyyy-MM-ddTHH:mm:ss', 'en-US');
+                }
                 dragToSelectEvent.title = data.newEvent.title;
                 dragToSelectEvent.description = data.newEvent.description;
-                this.calendarService.createCalendarEvent(dragToSelectEvent);
+                this.calendarService.createCalendarEvent(dragToSelectEvent).subscribe(result => {
+                  dragToSelectEvent.id = Number(result);
+                },
+                e => {
+                  this.events.pop();
+                  console.error(e);
+
+                },
+                () => {
+                  this.notifyService.notification$.next({message:'utworzono zdarzenie', isError: false});
+                }
+            );
 
                 if (data.createTask) {
                   this.taskService.createTask(data.newEvent.title);

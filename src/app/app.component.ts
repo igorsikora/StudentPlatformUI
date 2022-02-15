@@ -12,10 +12,18 @@ export class AppComponent {
   constructor(
     private notificationService: NotificationService, private snackBar: MatSnackBar
   ) {
-    this.notificationService.notification$.subscribe(message => {
-      this.snackBar.open(message, undefined, {
-        duration: 1000
-      });
+    this.notificationService.notification$.subscribe((data: {message: string, isError: boolean}) => {
+      if(data.isError) {
+        this.snackBar.open(data.message, undefined, {
+          duration: 2000,
+          panelClass: ['error-snackbar']
+        });
+      } else {
+        this.snackBar.open(data.message, undefined, {
+          duration: 1000
+        });
+      }
+
     });
   }
 }

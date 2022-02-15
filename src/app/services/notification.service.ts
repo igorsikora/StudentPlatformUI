@@ -3,7 +3,8 @@ import { Subject } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class NotificationService {
-  public notification$: Subject<string> = new Subject();
+  public notification$: Subject<{message: string, isError: boolean}> = new Subject();
   constructor() { }
+
 
 }

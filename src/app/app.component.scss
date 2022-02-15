@@ -18,4 +18,5 @@ mat-sidenav {
   display: block;
 }
 
-
+//Snackbar error
+::ng-deep .error-snackbar { background-color: rgb(240, 0, 72) !important; }

@@ -31,7 +31,7 @@ describe('Toolbar testing', () => {
 
   it('Logout', () => {
     cy.get('[data-qa="logout"]').click();
-    cy.url().should('include', '/login')
+    cy.url().should('include', '/auth/login')
   })
 
 

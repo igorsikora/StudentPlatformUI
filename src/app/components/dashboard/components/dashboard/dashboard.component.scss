@@ -4,6 +4,7 @@
   align-items: center;
   height: 100%;
   &__card {
+    border: 1px solid #ccc;
     width: 30vw;
     height: 80vh;
     mat-card-title {

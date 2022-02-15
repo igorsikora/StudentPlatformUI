@@ -1,42 +1,32 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
-import { TaskListComponent } from './components/task-list/task-list.component';
-import { UserComponent } from './components/user/user.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'auth',
     pathMatch: 'full',
   },
   {
     path: 'dashboard',
     canActivate: [AuthGuard],
-    component: DashboardComponent
+    loadChildren: () => import('./components/dashboard/dashboard.module').then(mod => mod.DashboardModule)
   },
   {
     path: 'taskList',
     canActivate: [AuthGuard],
-    component: TaskListComponent
+    loadChildren: () => import('./components/task-list/task-list.module').then(mod => mod.TaskListModule)
   },
   {
     path: 'user',
     canActivate: [AuthGuard],
-    component: UserComponent
+    loadChildren: () => import('./components/user/user.module').then(mod => mod.UserModule)
   },
   {
-    path: 'login',
-    component: LoginComponent
+    path: 'auth',
+    loadChildren: () => import('./components/auth/auth.module').then(mod => mod.AuthModule)
   },
-  {
-    path: 'register',
-    component: RegisterComponent
-  },
-
   {
     path: 'calendar',
     canActivate: [AuthGuard],
@@ -44,7 +34,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    component: DashboardComponent
+    redirectTo: 'dashboard',
   }
 ];
 

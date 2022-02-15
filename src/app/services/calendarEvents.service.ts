@@ -1,8 +1,8 @@
 import { formatDate } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, throwError } from 'rxjs';
-import { catchError, map, retry } from 'rxjs/operators';
+import { Subject, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { CalendarEventDto } from '../models/calendar-event.dto';
 import { NotificationService } from './notification.service';
@@ -39,7 +39,6 @@ export class CalendarEventsService {
                 beforeStart : true
               }
             });
-            console.log(response);
            // return the modified data:
            return response;
        }),
@@ -69,7 +68,6 @@ export class CalendarEventsService {
               beforeStart : true
             }
           });
-          console.log(response);
          // return the modified data:
          return response;
      }),
@@ -83,23 +81,19 @@ export class CalendarEventsService {
   updateCalendarEvent(dto: CalendarEventDto): void {
     this.http.put(environment.apiUrl + this.controllerUrl, dto).subscribe(
       () => {},
-      e => console.error(e),
+      e => {
+        this.notifyService.notification$.next({message:'Błąd edycji zdarzenia', isError: true});
+         console.error(e)
+      },
       () => {
-        this.notifyService.notification$.next('zmieniono zdarzenie');
+        this.notifyService.notification$.next({message:'zmieniono zdarzenie', isError:false});
       }
 
     );
   }
 
-  createCalendarEvent(dto: CalendarEventDto): void {
-    this.http.post(environment.apiUrl + this.controllerUrl, dto).subscribe(result => {
-      dto.id = Number(result);
-    },
-    e => console.error(e),
-    () => {
-      this.notifyService.notification$.next('utworzono zdarzenie');
-    }
-);
+  createCalendarEvent(dto: CalendarEventDto) {
+    return this.http.post(environment.apiUrl + this.controllerUrl, dto);
   }
 
   deleteCalendarEvent(CalendarEventId: number) {

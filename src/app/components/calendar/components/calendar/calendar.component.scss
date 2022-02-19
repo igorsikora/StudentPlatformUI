@@ -1,14 +1,8 @@
+@import "variables.scss";
 .header {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  margin-bottom: 12px;
-  position: sticky;
-  top:64px; //height of toolbar
-  padding:12px 0 12px 0; // margin of main + fill bottom
-  background-color: white;
-  z-index: 1001;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
   &__buttons {
     display: flex;
     button {
@@ -16,3 +10,21 @@
     }
   }
 }
+
+.sticky-navigation {
+  z-index: 1001;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
+  background-color: $background;
+  padding:12px 0 12px 0; // margin of main + fill bottom
+  top:64px; //height of toolbar
+  margin-bottom: 12px;
+  position: sticky;
+}
+.calendarTitle {
+  white-space: normal;
+}
+//override app styles
+::ng-deep main {
+  margin-top: 0 !important;
+}
+

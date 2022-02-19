@@ -10,7 +10,8 @@ import { NotificationService } from './services/notification.service';
 export class AppComponent {
   title = 'FrontEnd';
   constructor(
-    private notificationService: NotificationService, private snackBar: MatSnackBar
+    private notificationService: NotificationService,
+    private snackBar: MatSnackBar
   ) {
     this.notificationService.notification$.subscribe((data: {message: string, isError: boolean}) => {
       if(data.isError) {

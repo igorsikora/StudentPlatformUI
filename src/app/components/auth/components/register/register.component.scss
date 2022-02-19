@@ -2,7 +2,7 @@
   width: 60vw;
   max-height: 80vh;
   margin: auto; //center horizontally
-
+  margin-top: 10vh;
   &__form {
     display: flex;
     flex-direction: column;
@@ -10,4 +10,5 @@
   button {
     margin-top: 10px;
   }
+
 }

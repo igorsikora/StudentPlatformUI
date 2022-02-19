@@ -31,9 +31,14 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
+              "src/styles/custom-theme.scss",
               "src/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/_shared/styles"
+              ]
+            },
             "scripts": []
           },
           "configurations": {
@@ -70,12 +75,15 @@
           "defaultConfiguration": "production"
         },
         "serve": {
+
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
+
             "production": {
               "browserTarget": "FrontEnd:build:production"
             },
             "development": {
+
               "browserTarget": "FrontEnd:build:development"
             }
           },
@@ -100,7 +108,7 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
+              "src/styles/custom-theme.scss",
               "src/styles.scss"
             ],
             "scripts": []

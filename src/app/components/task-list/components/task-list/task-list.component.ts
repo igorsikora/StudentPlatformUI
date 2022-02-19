@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {CdkDragDrop, transferArrayItem} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { TaskService } from 'src/app/services/task.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Status } from 'src/app/models/status.enum';
 import { TaskDto } from 'src/app/models/task.dto';
+import { NotificationService } from 'src/app/services/notification.service';
 @Component({
   selector: 'app-task-list',
   templateUrl: './task-list.component.html',
@@ -16,7 +17,7 @@ export class TaskListComponent implements OnInit {
   done = Array<TaskDto>();
   constructor(
     private taskService: TaskService,
-    private snackBar: MatSnackBar) { }
+    private notifyService: NotificationService) { }
 
   ngOnInit(): void {
     this.taskService.getToDoTasks();
@@ -26,7 +27,8 @@ export class TaskListComponent implements OnInit {
     this.taskService.inProgressTasks.subscribe(value => this.inProgress = value);
     this.taskService.DoneTasks.subscribe(value => this.done = value);
   }
-  drop(event: CdkDragDrop<TaskDto[]>, name:string) {
+  drop(event: CdkDragDrop<TaskDto[]>, name: string) {
+
     let statusId!: number;
     switch (name) {
       case 'toDo':
@@ -40,6 +42,13 @@ export class TaskListComponent implements OnInit {
         break;
     }
     if (event.previousContainer !== event.container) {
+      // transferArrayItem(
+      //   event.previousContainer.data,
+      //   event.container.data,
+      //   event.previousIndex,
+      //   event.currentIndex,
+      // );
+      //ToDo updatetask teraz dostaje nowe dane po wysyłce
       this.taskService.updateTask(event.previousContainer.data[event.previousIndex], statusId).subscribe(() => {
         transferArrayItem(
           event.previousContainer.data,
@@ -48,17 +57,20 @@ export class TaskListComponent implements OnInit {
           event.currentIndex,
         );
       },
-      e => {
-        console.error(e);
-        this.snackBar.open("update went wrong!", undefined, {
-          duration: 2000
-        })
-      },
-      () => {
-        this.snackBar.open("update succesfully", undefined, {
-          duration: 2000
-        })
-      });
+        e => {
+          transferArrayItem(
+            event.container.data,
+            event.previousContainer.data,
+            event.currentIndex,
+            event.previousIndex,
+          );
+          console.error(e);
+          this.notifyService.notification$.next({ message: "błąd edycji zadania", isError: true });
+        },
+        () => {
+          this.notifyService.notification$.next({ message: "zadanie zostało edytowane", isError: false });
+
+        });
     }
   }
 
@@ -69,5 +81,8 @@ export class TaskListComponent implements OnInit {
 
   deleteDoneTasks() {
     this.taskService.deleteTasks(this.done);
+  }
+  deleteTask(taskList: Array<TaskDto>, taskId: number) {
+    this.taskService.deleteTask(taskList,taskId)
   }
 }

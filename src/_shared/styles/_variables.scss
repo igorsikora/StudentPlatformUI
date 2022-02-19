@@ -1,0 +1,7 @@
+@use '~@angular/material' as mat;
+@import '../../styles/custom-theme.scss';
+
+$my-theme-primary: mat.get-color-from-palette($primary, 'default');
+$my-theme-accent:  map-get($accent, 'default');
+$my-theme-warn:    map-get($warn, 'default');
+$background : #ebebeb;

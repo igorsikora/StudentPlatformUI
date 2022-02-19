@@ -19,7 +19,10 @@
 
     <button mat-flat-button color="primary" (click)="createNewTask()" [disabled]="!titleInput.value" data-qa="addTask">Dodaj</button>
   </div>
-  <div class="toDoList__element" *ngFor="let item of todo" cdkDrag data-qa="toDoTask">{{item.title}}</div>
+  <div class="toDoList__element" *ngFor="let item of todo" cdkDrag data-qa="toDoTask">
+    <mat-icon aria-hidden="false" aria-label="delete" class="toDoList__element--delete" (mousedown)="deleteTask(todo, item.id)">remove_circle</mat-icon>
+    {{item.title}}
+  </div>
 </div>
 
   <div class="toDoList__list"
@@ -32,7 +35,10 @@
   data-qa="inProgressPanel"
   >
   <div class="toDoList__header">W TRAKCIE</div>
-  <div class="toDoList__element" *ngFor="let item of inProgress" cdkDrag>{{item.title}}</div>
+  <div class="toDoList__element" *ngFor="let item of inProgress" cdkDrag>
+    <mat-icon aria-hidden="false" aria-label="delete" class="toDoList__element--delete" (mousedown)="deleteTask(inProgress, item.id)">remove_circle</mat-icon>
+    {{item.title}}
+  </div>
 </div>
 
   <div class="toDoList__list"
@@ -45,7 +51,11 @@
   data-qa="donePanel"
 
   >
-  <div class="toDoList__header">GOTOWE<button mat-button (click)="deleteDoneTasks()" data-qa="clearAllDoneTasks">Wyczyść</button></div>
-  <div class="toDoList__element" *ngFor="let item of done" cdkDrag data-qa="doneTask">{{item.title}}</div>
+  <div class="toDoList__header buttonHeader"><p>GOTOWE</p><button mat-flat-button color="accent" (click)="deleteDoneTasks()" data-qa="clearAllDoneTasks">Wyczyść</button></div>
+  <div class="toDoList__element" *ngFor="let item of done" cdkDrag data-qa="doneTask">
+    <mat-icon aria-hidden="false" aria-label="delete" class="toDoList__element--delete" (mousedown)="deleteTask(done, item.id)">remove_circle</mat-icon>
+    {{item.title}}
+
+  </div>
 </div>
 </div>

@@ -28,13 +28,12 @@ export class TaskService {
       taskDto.id = Number(result);
       this.getToDoTasks();
     },
-    e =>
-    {
-      this.notifyService.notification$.next({message:'Błąd tworzenia zadania', isError: true});
-       console.error(e)
-    },
+      e => {
+        this.notifyService.notification$.next({ message: 'Błąd tworzenia zadania', isError: true });
+        console.error(e)
+      },
       () => {
-        this.notifyService.notification$.next({message:'stworzono zadanie', isError: false});
+        this.notifyService.notification$.next({ message: 'stworzono zadanie', isError: false });
       }
     );
   }
@@ -63,27 +62,42 @@ export class TaskService {
   }
 
   // ToDo czy potrzebne
-  deleteTask(id: number): void {
+  deleteTask(dtos: Array<TaskDto>, id: number): void {
     this.http.delete(environment.apiUrl + this.controllerUrl + "/" + id).subscribe(
       () => { },
-      e =>
-      {
-        this.notifyService.notification$.next({message:'Błąd usuwania zadania', isError: true});
-         console.error(e)
+      e => {
+        this.notifyService.notification$.next({ message: 'Błąd usuwania zadania', isError: true });
+        console.error(e)
       },
-      () => this.notifyService.notification$.next({message:'usunięto zadanie', isError: false}));
+      () => {
+        console.log(dtos);
+        let statusId = dtos[0].statusId;
+        dtos = dtos.filter(t => t.id != id);
+        switch (statusId) {
+          case Status.toDo:
+            this.toDoTasks.next(dtos);
+            break;
+          case Status.inProgress:
+            this.inProgressTasks.next(dtos);
+            break;
+          case Status.Done:
+            this.DoneTasks.next(dtos);
+            break;
+        }
+        this.notifyService.notification$.next({ message: 'usunięto zadanie', isError: false })
+      });
   }
 
   deleteTasks(dtos: Array<TaskDto>) {
     this.http.request('delete', (environment.apiUrl + this.controllerUrl), { body: dtos }).subscribe(() => {
     },
-    e => {
-      this.notifyService.notification$.next({message:'Błąd usuwania zadań', isError: true});
-       console.error(e)
-    },
-    () => {
+      e => {
+        this.notifyService.notification$.next({ message: 'Błąd usuwania zadań', isError: true });
+        console.error(e)
+      },
+      () => {
         this.DoneTasks.next([]);
-        this.notifyService.notification$.next({message:'usunięto zrobione zadania', isError: false});
+        this.notifyService.notification$.next({ message: 'usunięto zrobione zadania', isError: false });
       });
   }
 }

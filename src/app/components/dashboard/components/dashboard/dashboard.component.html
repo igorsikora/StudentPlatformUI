@@ -3,7 +3,7 @@
     <mat-card-title>Dzisiejsze zdarzenia w kalendarzu</mat-card-title>
     <mat-card-content>
       <div class="dashboard__element" *ngFor="let event of calendarEvents">
-        <p>{{event.start | date:"HH:mm"}}-{{event.end | date:"HH:mm"}}</p>
+        <p><b>{{event.start | date:"HH:mm"}}-{{event.end | date:"HH:mm"}}</b></p>
         <p>{{event.title}}</p>
         <p>{{event.description}}</p>
        </div>

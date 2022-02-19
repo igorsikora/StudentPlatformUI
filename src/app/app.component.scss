@@ -1,3 +1,5 @@
+@import 'variables';
+
 mat-sidenav-container, mat-sidenav-content, mat-sidenav {
   height: 100%;
   display: block;
@@ -18,5 +20,5 @@ mat-sidenav {
   display: block;
 }
 
-//Snackbar error
-::ng-deep .error-snackbar { background-color: rgb(240, 0, 72) !important; }
+// //Snackbar error
+ ::ng-deep .error-snackbar { background-color: $my-theme-warn !important; }

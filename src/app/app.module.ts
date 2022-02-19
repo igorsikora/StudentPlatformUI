@@ -12,7 +12,6 @@ import localePl from '@angular/common/locales/pl';
 import { TaskService } from './services/task.service';
 import { NotificationService } from './services/notification.service';
 import { registerLocaleData } from '@angular/common';
-import { OAuthModule } from 'angular-oauth2-oidc';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ModalsModule } from './components/modals/modals.module';
 import { UserService } from './services/user.service';
@@ -45,7 +44,7 @@ registerLocaleData(localePl);
     TaskService,
     NotificationService,
     UserService,
-    //auth
+    //auth interceptor
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

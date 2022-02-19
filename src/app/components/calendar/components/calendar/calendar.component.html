@@ -1,4 +1,4 @@
- <div class="header">
+ <div class="header sticky-navigation">
   <div class="header__buttons">
       <button
         mat-flat-button
@@ -134,10 +134,12 @@
 </ng-template>
 
 <ng-template #eventTitleTemplate let-event="event">
-  <p>
-    <b>{{ event.start | date: "HH:mm" }}-{{ event.end | date: "HH:mm" }}</b> {{event.title}}
-  </p>
-  <p>{{ event.description }}</p>
+  <div class="calendarTitle">
+    <p> <b>{{ event.start | date: "HH:mm" }}-{{ event.end | date: "HH:mm" }} {{event.title}}</b> </p>
+
+    <p>{{ event.description }}</p>
+
+</div>
 </ng-template>
 
 

@@ -1,11 +1,18 @@
+// main {
+//   margin-top: 12px;
+// }
 .toDoList {
+
   display: flex;
   justify-content: space-evenly;
-
+  align-items: center;
+  height: 100%;
 
   &__list {
+    height: 97%;
   border: solid 1px #ccc;
-  height: 90vh;
+  //height: calc(100vh - 64px - 24px);
+
   width: 30vw;
   background: white;
   //border-radius: 4px;
@@ -19,6 +26,15 @@
     text-align: center;
   }
   &__element {
+    position: relative;
+    &--delete {
+      //font-size: 12px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      cursor: pointer;
+    }
+    overflow-wrap: break-word;
     min-height: 3vh;
   padding: 20px 10px;
   border-bottom: solid 1px #ccc;
@@ -29,14 +45,37 @@
   font-size: 1.2em;
 
   &--create {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
     height: 15vh;
     text-align: center;
+    mat-form-field {
+      width: 60%;
+    }
     button {
-      margin-left: 20px;
+      width: 30%;
+      max-height: 80%;
     }
   }
   }
 }
+.buttonHeader {
+
+  p {
+    display: inline-block;
+  vertical-align: middle;
+  }
+  button {
+    display: inline-block;
+    vertical-align: middle;
+
+    float: right;
+  }
+}
+
+
 
 
 .cdk-drag-preview {

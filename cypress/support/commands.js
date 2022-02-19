@@ -14,36 +14,47 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
+Cypress.Commands.add("login", (login, password) => {
+  cy.request("POST", "https://localhost:44303/api/Auth/SignIn", {
+    userName: login,
+    password: password,
+  })
+    .its("body")
+    .then((body) => {
+      localStorage.setItem("token", body);
+    });
+});
 
-Cypress.Commands.add("drag", (drag, drop) => {
-
-  cy.get(drag, {force: true}).should('exist')
-  .then($target => {
-    let coords = $target[0].getBoundingClientRect();
-    const draggable = $target[0];
-    cy.get(drop).should('exist').then($drop => {
-      let dropCoords = $drop[0].getBoundingClientRect();
-      draggable.dispatchEvent(new MouseEvent("mousedown"));
-      draggable.dispatchEvent(
-        new MouseEvent("mousemove", {
-          clientX: coords.left,
-          clientY: coords.top,
+Cypress.Commands.add("dragAndDrop", (dragSelector, dropSelector) => {
+  cy.get(dropSelector).then(($drop) => {
+    cy.get(dragSelector, { force: true }).then(($drag) => {
+      const dragAndDropElement = $drag[$drag.length - 1];
+      let dragBox = $drag[$drag.length - 1].getBoundingClientRect();
+      let dropBox = $drop[$drop.length - 1].getBoundingClientRect();
+      dragAndDropElement.dispatchEvent(
+        new MouseEvent("mousedown", {
+          clientX: dragBox.left + 1,
+          clientY: dragBox.top,
         })
-        );
-        draggable.dispatchEvent(
-          new MouseEvent("mousemove", {
-            clientX: dropCoords.left,
-            clientY: dropCoords.top,
-          })
-          );
-          draggable.dispatchEvent(
-
-            new MouseEvent("mouseup", {
-              clientX: dropCoords.left,
-              clientY: dropCoords.top,
-            }));
-          });
-        });
-        return cy.get(drop);
-})
-
+      );
+      dragAndDropElement.dispatchEvent(
+        new MouseEvent("mousemove", {
+          clientX: dragBox.left + dragBox.width / 2,
+          clientY: dragBox.top + dragBox.height / 2,
+        })
+      );
+      dragAndDropElement.dispatchEvent(
+        new MouseEvent("mousemove", {
+          clientX: dropBox.left + dropBox.width / 2,
+          clientY: dropBox.top + dropBox.height / 2,
+        })
+      );
+      dragAndDropElement.dispatchEvent(
+        new MouseEvent("mouseup", {
+          clientX: dropBox.left + dropBox.width / 2,
+          clientY: dropBox.top + dropBox.height / 2,
+        })
+      );
+    });
+  });
+});

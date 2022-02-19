@@ -93,8 +93,8 @@ export class CalendarComponent implements OnInit {
   handleEvent(action: string, event: any): void {
     if (action === 'Clicked') {
       const dialogRef = this.dialog.open(CalendarEventModalComponent, {
-        width: '50vw',
-        height: '50vh',
+        width: '40vw',
+        height: '70vh',
         data: event,
       });
 
@@ -154,8 +154,8 @@ export class CalendarComponent implements OnInit {
         finalize(() => {
 
           const dialogRef = this.dialog.open(CalendarEventModalComponent, {
-            width: '25vw',
-            height: '50vh',
+            width: '40vw',
+            height: '70vh',
             data: { event: dragToSelectEvent },
           });
 

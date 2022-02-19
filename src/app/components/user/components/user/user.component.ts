@@ -38,7 +38,6 @@ export class UserComponent implements OnInit {
       lastName: this.userForm.get('lastName')!.value,
     }
     this.userService.updateUser(userUpdateDto);
-    this.userService.updateUserName(userUpdateDto);
   }
 
   onChangePassword() {
